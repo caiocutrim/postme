@@ -46,7 +46,7 @@ function validateProcess (err) {
       message:'Created',
     },{
       onClose() {
-        FlowRouter.go('/posts/private');
+        FlowRouter.go('/');
       }
     });
   }
@@ -61,10 +61,11 @@ Template.login.events({
     let password = target.password.value;
     Meteor.loginWithPassword(user, password, function(err) {
       if (err) {
-        console.log(err)
+        sAlert.error(err.reason);
+        $('.submit-buttom').prop('value', 'Maybe you need to create an account');
       } else {
         $('.submit-buttom').prop('value', 'Login');
-        FlowRouter.go('/posts/private');
+        FlowRouter.go('/');
       }
     })
   }
