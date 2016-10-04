@@ -34,6 +34,10 @@ Template.public_posts.helpers({
     } else {
       return this.comments.length;
     }
+  },
+  hasPosts() {
+    let user = Meteor.user().username;
+    return Posts.find({author: user, private: false}).count() != 0;
   }
 });
 
