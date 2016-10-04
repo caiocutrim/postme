@@ -3,9 +3,6 @@ import {Template} from 'meteor/templating';
 
 import './mainLayout.html';
 
-
-Template.layout.helpers({
-  pageTitle() {
-    return Session.get('pageTitle');
-  }
-})
+Template.mainLayout.onCreated(function() {
+  document.title = "Post-me: post everywhere"
+});
