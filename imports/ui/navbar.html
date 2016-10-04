@@ -1,0 +1,33 @@
+<template name="navbar">
+  <nav class="navbar navbar-default" role="navigation">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><i class="fa fa-home"></i> Postme</a>
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
+      <ul class="nav navbar-nav">
+        {{#if currentUser }}
+          <li><a href="/posts/all/{{currentUser.username}}">Posts</a></li>
+          <li><a href="/posts/private">Private Posts <span class="fa fa-lock"></span></a></li>
+          <li><a href="/posts/public/best">Best Posts (More voted)</a></li>
+          <li><a href="/posts/public">Public Posts <span class="fa fa-globe"></span></a></li>
+        {{/if}}
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        {{#if currentUser }}
+          <li><a href="/user"><i class="fa fa-user"></i> {{displayUser.username}}</a></li>
+          <li><a href="#" class="logout"><span class="fa fa-sign-out"></span> Logout</a></li>
+        {{else}}
+          <li><a href="/login"><span class="fa fa-sign-in"></span> Sign in</a></li>
+        {{/if}}
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </nav>
+</template>
