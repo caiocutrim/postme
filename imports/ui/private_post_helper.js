@@ -31,6 +31,10 @@ Template.private_posts.helpers({
       return this.comments.length;
     }
   },
+  hasPosts () {
+    let author = Meteor.user().username;
+    return Posts.find({private:true, author}).count() != 0;
+  }
 });
 
 Template.private_posts.events({
