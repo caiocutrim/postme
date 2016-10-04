@@ -14,10 +14,10 @@
     <div class="collapse navbar-collapse navbar-ex1-collapse">
       <ul class="nav navbar-nav">
         {{#if currentUser }}
-          <li><a href="/posts/all/{{currentUser.username}}">Posts</a></li>
-          <li><a href="/posts/private">Private Posts <span class="fa fa-lock"></span></a></li>
-          <li><a href="/posts/public/best">Best Posts (More voted)</a></li>
-          <li><a href="/posts/public">Public Posts <span class="fa fa-globe"></span></a></li>
+          <li><a href="/posts/all/{{currentUser.username}}">Manage your posts</a></li>
+          <li><a href="/posts/private">Your Private Posts <span class="fa fa-lock"></span></a></li>
+          <li><a href="/posts/public">Your Public Posts <span class="fa fa-globe"></span></a></li>
+          <li><a href="/posts/public/best">All Best Posts (More voted) <span class="fa fa-star"></span></a></li>
         {{/if}}
       </ul>
       <ul class="nav navbar-nav navbar-right">
