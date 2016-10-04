@@ -94,7 +94,8 @@ Template.recentPosts.events({
     event.preventDefault();
     Meteor.call('posts.upvote', this._id, (err) => {
       if (err) {
-        console.log(err);
+        sAlert.error(err.reason);
+        $('.upvote').prop('title','You already upvoted this post');
       } else {
         sAlert.info('You add an vote :)');
       }
