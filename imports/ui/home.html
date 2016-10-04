@@ -1,0 +1,52 @@
+<template name="home">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="page page-home">
+          <h2>Welcome to <strong>postme</strong>.</h2>
+          <p>Do you have interesing idea? Jus post herer, then see what people think about.</p>
+          <h3>First steps to use postme</h3>
+          <p><span class="fa fa-plus"></span> Create an <a href="/signup">account</a> or if you already have it,
+          then <a href="/login">log in it</a></p>
+          <p><span class="fa fa-fa"></span> Post everythink you want :) </p>
+          <p><span class="fa fa-clipboard"></span> Recent posts:</p>
+          {{>recentPosts}}
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<template name="recentPosts">
+  {{>sAlert}}
+  <div class="posts">
+  {{#if Template.subscriptionsReady}}
+  {{#each posts}}
+    <div class="post" style="position:relative; right:25px;">
+      <h4><a href="{{url}}" target="_blank">
+        <a href="#" class="upvote btn btn-default"><span class="fa fa-arrow-up"></span></a>
+        {{title}}</a> 
+        <span>{{url}}</span>
+      </h4>
+      <p>{{votes}} Vote(s), submitted by {{author}}, <a href="#"> 0  comment(s)</a></p>
+      <buttom id="{{_id}}" class="comment-buttom btn btn-default btn-discuss"> 
+        Discuss 
+      </buttom>
+      <ul id="{{_id}}" class="comments">
+        {{#each comment in comments}}
+        <li id="comment"><strong>{{comment.userThatCommented}}</strong>: {{comment.text}} 
+          <span id="{{comment._id}}" class="remove-comment fa fa-times-circle-o"></span> 
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+    {{/each}}
+    {{else}}
+      {{> loading}}
+   {{/if}}
+  </div>
+</template>
+<template name="loading">
+  {{# spinner type='wave' visible=true}}
+    <span>Loading</span>
+  {{/spinner}}
+</template>

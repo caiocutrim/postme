@@ -1,0 +1,130 @@
+/* CSS declarations go here */
+.page-home {
+  margin-bottom:55px;
+}
+.page-post {
+  position: relative;
+  background-color: white;
+  left:-105px;
+  margin-bottom:15px;
+}
+.public .post, .private .post {
+  position: relative;
+  box-shadow: 0px 0px 25px -10px #888;
+  padding:3px 15px 3px 15px;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.page {
+  padding:10px 10px 45px;
+  box-shadow: 0px 0px 25px -10px #ccc;
+  border-radius: 5px;
+  background-color: white;
+}
+.auth-form {
+  font-family:"Open Sans";
+  padding: 10px;
+  border: 1px solid white;
+  border-radius: 3%;
+  box-shadow: 0px 0px 25px #ccc;
+  position: relative;
+  margin-top:50%;
+}
+.auth-form legend {
+  font-family: 'Oswald';
+}
+.posts {
+  padding: 10px 10px 10px 10px;
+  margin-bottom:15px;
+}
+.posts .post {
+  left: 1px;
+}
+.comments {
+  position: relative;
+  border-radius:3px;
+  padding:5px;
+  width: 100%;
+  box-shadow: 0px 0px 25px -10px #ccc;
+  transition:1s ease-in-out;
+}
+.comments:hover {
+  border-radius: 5px 5px 5px 5px;
+  box-shadow: 0px 0px 25px -10px #888;
+}
+.comments #comment {
+  margin-top: 5px;
+  margin-bottom:5px;
+  margin-left: 15px;
+  border-radius: 5px 5px 5px 5px;
+  box-shadow: 0px 0px 25px -10px #888;
+  background-color: white;
+  padding:10px;
+  list-style: disc; 
+  transition:0.5s ease-in-out;
+}
+.remove-comment {
+  display:block;
+  position: absolute;
+  left:95%;
+  margin-top: 5px;
+}
+.remove-comment:hover {
+  cursor:pointer;
+}
+.comments #comment:hover {
+  box-shadow: 0px 0px 25px -8px #000;
+}
+.post .btn-discuss {
+  position: relative;
+  display:block;
+  float: right;
+  margin-top: -52px;
+}
+
+.post span {
+  font-size:14px;
+}
+.public:hover, .private:hover, .remove:hover, .update:hover, .view:hover {
+  cursor: pointer;
+}
+.remove, .update, .private, .public {
+  position: relative;
+  top:2px;
+}
+.editlist {
+  display: none;
+}
+
+#insert-form {
+  margin-top: 5px;
+  position: relative;
+  display: none;
+}
+
+#insertpost:hover {
+ cursor: pointer; 
+}
+
+.clicked-public {
+  background-color:deepskyblue;
+  color:white;
+}
+
+.clicked-private {
+  background-color:orangered;
+  color:white;
+}
+
+.comment-form {
+  background-color: #fff;
+  margin-top: -2px;
+  display:none;
+  box-shadow: 0px 0px 25px -10px #888;
+  padding:10px;
+}
+
+.display-item {
+  display:block;
+}

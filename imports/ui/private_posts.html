@@ -1,0 +1,48 @@
+<template name="private_posts">
+  {{>sAlert}}
+  <div class="col-md-8 col-md-offset-2 page-post">
+    <div class="private">
+      {{#if Template.subscriptionsReady}}
+      <p>Private posts:</p>
+      {{#each posts}}
+          <div class="post">
+            <h4>
+              <a href="{{url}}" target="_blank">
+              <a href="#" class="upvote btn btn-default">
+              <span class="fa fa-arrow-up"></span></a>
+              {{title}}</a> <span>{{url}}</span>
+              <i id="remove" class="fa fa-times-circle-o remove" title="Remove post"></i>
+              <i id="{{_id}}" class="fa fa-pencil-square-o update" title="Edit post"></i>
+              <i id="{{_id}}-private" class="fa fa-lock private-btn clicked-private" title="Your Post is private"></i>
+              <i id="{{_id}}-public" class="fa fa-globe public-btn" title="Set as public post"></i>
+            </h4>
+            <p>{{votes}} Vote(s), submitted by {{author}}, <a href="#">
+                {{numberOfComments}} comment(s)</a></p>
+
+            <buttom id="{{_id}}" class="btn btn-default btn-discuss comment">Discuss</buttom>
+          </div>
+          <div class="editlist" id="{{_id}}">
+            {{>post_edit}}
+          </div>
+          <!-- comments -->
+          <div id="{{_id}}" class="comments col-md-10 col-md-offset-1">
+            {{#each comments in comments}}
+              <div id="comment"><strong>{{comments.userThatCommented}}</strong>: {{comments.text}}
+                <span id="{{comments._id}}" class="remove-comment fa fa-times-circle-o"></span>
+              </div>
+            {{/each}}
+          </div>
+          <div class="comment col-md-10 col-md-offset-1">
+          <form method="POST" class="form-inline comment-form" role="form" id="{{_id}}">
+            <input type="text" class="form-control" name="comment" id="comment-input" placeholder="comment" required>
+            <input type="submit" class="btn btn-default" value="Send text">     
+          </form>
+          </div>
+      {{/each}}
+      {{else}}
+        {{#spinner type='wave' visible=true}}
+        {{/spinner}}
+      {{/if}}
+    </div>
+  </div>
+</template>

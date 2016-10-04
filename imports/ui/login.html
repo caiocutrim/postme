@@ -1,0 +1,22 @@
+<template name="login">
+  <div class="container">
+    <div class="col-md-4 col-md-offset-4">
+      {{> sAlert}}
+      <form action="" method="POST" role="form" class="auth-form">
+        <legend>Login</legend>
+        <div class="form-group">
+          <input type="text" class="form-control" id="username" 
+          name="user" placeholder="Username or email" required>
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control" id="password" 
+          name="password" placeholder="Your password" required>
+        </div>
+        <div class="form-group">
+          <input type="submit" class="btn btn-primary submit-buttom" value="Login" style="width:100%">
+          <a href="/signup" style="font-weight:bold;">or create an account</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
