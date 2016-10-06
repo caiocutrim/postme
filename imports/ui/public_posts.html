@@ -2,6 +2,10 @@
   {{> sAlert}}
   <div class="col-md-8 col-md-offset-2 page-post">
     <div class="public">
+    <buttom class="insertpost btn btn-default">
+      Insert post <i class="fa fa-plus"></i>
+    </buttom>
+    {{> post_insert_form}}
       {{#if Template.subscriptionsReady}}
         {{#if hasPosts }}
           <p>Public posts:</p>
@@ -28,20 +32,9 @@
               {{> post_edit}}
             </div>
             <!-- comments -->
-            <div id="{{_id}}" class="comments col-md-10 col-md-offset-1">
-              {{#each comments}}
-                <div id="comment"><strong>{{comments.userThatCommented}}</strong>: {{comments.text}}
-                  <span id="{{comments._id}}" class="remove-comment fa fa-times-circle-o"></span>
-                </div>
-              {{/each}}
-            </div>
+            {{>comments}}
             <!-- form comments -->
-            <div class="comment col-md-10 col-md-offset-1">
-              <form method="POST" class="form-inline comment-form" role="form" id="{{_id}}">
-                <input type="text" class="form-control" name="comment" id="comment-input" placeholder="comment" required>
-                <input type="submit" class="btn btn-default" value="Send text">     
-              </form>
-            </div>
+            {{>commentForm}}
         {{/each}}
         {{else}}
             <p>You don't have public posts yet, please write one :)</p>
