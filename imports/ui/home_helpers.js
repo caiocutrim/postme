@@ -5,7 +5,6 @@ import {sAlert} from 'meteor/juliancwirko:s-alert';
 import {ReactiveVar} from 'meteor/reactive-var';
 // model
 import {Posts} from '../api/models/posts';
-import {Comments} from '../api/models/posts';
 
 import './home.html';
 import './comments.html';
@@ -40,10 +39,6 @@ Template.home.onCreated(function () {
   
 });
 
-Template.comments.onCreated(function() {
-  Meteor.subscribe('comments');
-});
-
 Template.home.helpers({
   posts() {
     return Template.instance().posts();
@@ -52,15 +47,6 @@ Template.home.helpers({
     return Template.instance().posts().count() >= Template.instance().limit.get(); 
   },
 });
-
-Template.comments.helpers({
-  isCommentOwner() {
-    return this.userId === Meteor.userId();
-  },
-  comments() {
-   return Comments.find({postId:this._id});
-  }
-})
 
 const isUserLogged = Meteor.userId();
 
@@ -84,19 +70,6 @@ Template.recentPosts.events({
   }
 });
 
-Template.comments.events({
-  'click .remove-comment'(event) {
-    Meteor.call('comments.removeComment', this._id, this.postId, (err) => {
-      if (err) {
-        console.log(err);
-        sAlert.error('You can not do this action.');
-      }
-      else {
-        sAlert.info('Your comment has removed.');
-      }
-    });
-  },
-})
 
 Template.recentPosts.events({
   'click .upvote'(event) {
@@ -112,26 +85,3 @@ Template.recentPosts.events({
     });
   }
 });
-
-Template.commentForm.events({
-  'submit .comment-form'(event) {
-    event.preventDefault();
-    let postId = this._id;
-    let body = event.target.comment.value;
-
-    let comment = {
-      body,
-      postId
-    };
-
-    Meteor.call('comments.insertComment', comment, (err) => {
-      if (err) {
-        console.log(err);
-        sAlert.error(err.reason);
-      } else {
-        sAlert.info('Your comment was succesfuly posted');
-        event.target.comment.value = '';
-      }
-    });
-  },
-})
