@@ -2,6 +2,29 @@
 .page-home {
   margin-bottom:55px;
 }
+.btn-load-more {
+  position: relative;
+  left:40%;
+}
+.gravatar {
+  position: relative;
+  width:120px;
+  height:120px;
+  border: 1px solid #ccc;
+  padding: 10px 10px 10px 10px;
+}
+.recent {
+  border: 1px solid transparent;
+}
+.recent .post {
+  padding:3px 15px 3px 15px;
+  box-shadow: 0px 0px 25px -10px #ccc;
+  margin-bottom: 25px;
+  transition: 0.5s ease-in-out;
+}
+.recent .post:hover {
+  box-shadow: 0px 0px 25px -10px #888;
+}
 .page-post {
   position: relative;
   background-color: white;
