@@ -28,13 +28,6 @@ Template.public_posts.helpers({
       private: false
     });
   },
-  numberOfComments() {
-    if (this.comments === undefined) {
-      return 0;
-    } else {
-      return this.comments.length;
-    }
-  },
   hasPosts() {
     let user = Meteor.user().username;
     return Posts.find({author: user, private: false}).count() != 0;
