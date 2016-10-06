@@ -1,0 +1,20 @@
+<template name="profile">
+  {{>sAlert}}
+  <div class="col-md-6 col-md-offset-3">
+    <div class="page">
+      <div class="row">
+        <div class="col-md-3" role="usergravatar">
+          <img src="{{avatar 58}}" alt="gravatar" class="img-responsive gravatar">
+        </div>
+        <div class="col-md-4" role="userfields">
+          {{#each email in users.emails}}
+            <p><span class="fa fa-user"></span> {{email.address}}</p>
+          {{/each}}
+          <p><span class="fa fa-user"></span> {{users.username}}</p>
+          <p><span class="fa fa-user"></span> {{users.profile.firstname}}</p>
+          <p><span class="fa fa-user"></span> {{users.profile.lastname}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
