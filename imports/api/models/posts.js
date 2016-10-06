@@ -9,7 +9,7 @@ if (Meteor.isServer) {
   */
   Meteor.publish('posts', (limit) => {
     Meteor._sleepForMs(500); // to test animation
-    return Posts.find({}, {
+    return Posts.find({private:false}, {
       $sort: {
         createdAt : -1
       },
@@ -17,6 +17,14 @@ if (Meteor.isServer) {
     });
   });
   
+  Meteor.publish('bestposts', () => {
+    Meteor._sleepForMs(500); // to test animation
+    return Posts.find({private:false}, {
+      $sort: {
+        votes : -1
+      }
+    });
+  });
   Meteor.publish('publicPostsByAuthor', (author) => {
     Meteor._sleepForMs(500); // to test animation
     return Posts.find({
@@ -109,28 +117,32 @@ Meteor.methods({
   'comments.insertComment'(commentProperties) {
     let user = Meteor.user();
     let post = Posts.findOne(commentProperties.postId);
+    
     if (!user) {
       throw new Meteor.Error(401, 'You need to login to make comments');
     }
+    
     if (!commentProperties.body) {
       throw new Meteor.Error(422, 'please write some content :)');
     }
+    
     if (!post) {
       throw new Meteor.Error(422, 'You must comment on a post');
     }
     
-    let comment = _.extend(_.pick(commentProperties, 'postId', 'body'), {
+    const comment = _.extend(commentProperties, {
       userId: user._id,
-      author: user.username,
+      author: user.profile.firstname || user.username, 
       submitted: new Date().getTime(),
-      commentsCount: 0
     });
     
     Posts.update(comment.postId, {$inc:{
       commentsCount: 1
     }});
     
-    return Comments.insert(comment);
+    comment._id = Comments.insert(comment); 
+    
+    return comment._id;
     
   },
   'comments.removeComment'(commentId, postId) {
@@ -158,7 +170,11 @@ Meteor.methods({
       throw new Meteor.Error(422, 'Posts not found');
     if (_.include(post.upvoters, user._id))
       throw new Meteor.Error(422, 'Already upvoted this post');
-    Posts.update(post._id, {
+      
+    Posts.update({
+      _id:post._id,
+      upvoters:{$ne:user._id}
+    }, {
       $addToSet: {upvoters: user._id},
       $inc: {votes: 1}
     });
