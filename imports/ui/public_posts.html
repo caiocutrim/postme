@@ -19,7 +19,7 @@
                   title="Your post is public"></i>
               </h4>
               <p>{{votes}} Vote(s), submitted by {{author}}, 
-                <a href="#">{{numberOfComments}} comment(s)</a></p>
+                <a href="#">{{commentsCount}} comment(s)</a></p>
               <buttom id="{{_id}}" class="comment-buttom btn btn-default btn-discuss"> 
                 Discuss
               </buttom>
@@ -29,7 +29,7 @@
             </div>
             <!-- comments -->
             <div id="{{_id}}" class="comments col-md-10 col-md-offset-1">
-              {{#each comments in comments}}
+              {{#each comments}}
                 <div id="comment"><strong>{{comments.userThatCommented}}</strong>: {{comments.text}}
                   <span id="{{comments._id}}" class="remove-comment fa fa-times-circle-o"></span>
                 </div>
