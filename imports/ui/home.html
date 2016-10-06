@@ -10,41 +10,43 @@
           then <a href="/login">log in it</a></p>
           <p><span class="fa fa-fa"></span> Post everythink you want :) </p>
           <p><span class="fa fa-clipboard"></span> Recent posts:</p>
-          {{>recentPosts}}
+          {{#each posts}}
+            {{>recentPosts}}
+          {{/each}}
+          {{#if Template.subscriptionsReady}}
+             {{#if hasMorePosts}}
+                <div class="btn btn-default btn-load-more">Load more</div>
+             {{else}}
+                <div class="btn btn-default btn-load-more">We don't have more posts</div>
+             {{/if}}
+          {{else}}
+            {{> loading}}
+          {{/if}}
         </div>
       </div>
     </div>
   </div>
 </template>
+
 <template name="recentPosts">
   {{>sAlert}}
-  <div class="posts">
-  {{#if Template.subscriptionsReady}}
-  {{#each posts}}
-    <div class="post" style="position:relative; right:25px;">
-      <h4><a href="{{url}}" target="_blank">
-        <a href="#" class="upvote btn btn-default"><span class="fa fa-arrow-up"></span></a>
-        {{title}}</a> 
-        <span>{{url}}</span>
-      </h4>
-      <p>{{votes}} Vote(s), submitted by {{author}}, <a href="#"> 0  comment(s)</a></p>
-      <buttom id="{{_id}}" class="comment-buttom btn btn-default btn-discuss"> 
-        Discuss 
-      </buttom>
-      <ul id="{{_id}}" class="comments">
-        {{#each comment in comments}}
-        <li id="comment"><strong>{{comment.userThatCommented}}</strong>: {{comment.text}} 
-          <span id="{{comment._id}}" class="remove-comment fa fa-times-circle-o"></span> 
-        </li>
-        {{/each}}
-      </ul>
+    <div class="recent posts">
+      <div class="post" style="position:relative; right:25px;">
+        <h4><a href="{{url}}" target="_blank">
+          <a href="#" class="upvote btn btn-default"><span class="fa fa-arrow-up"></span></a>
+          {{title}}</a> 
+          <span>{{url}}</span>
+        </h4>
+        <p>{{votes}} Vote(s), submitted by {{author}}, <a href="#"> {{commentsCount}}  comment(s)</a></p>
+        <buttom id="{{_id}}" class="comment-buttom btn btn-default btn-discuss"> 
+          Discuss 
+        </buttom>
+        {{> comments }} 
+        {{>commentForm}}
+      </div>
     </div>
-    {{/each}}
-    {{else}}
-      {{> loading}}
-   {{/if}}
-  </div>
 </template>
+
 <template name="loading">
   {{# spinner type='wave' visible=true}}
     <span>Loading</span>
