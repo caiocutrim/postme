@@ -1,65 +1,37 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
-
 export const Posts = new Mongo.Collection('posts');
+export const Comments = new Mongo.Collection('comments');
+
 if (Meteor.isServer) {
-  if (Posts.find().count() === 0) {
-    Posts.insert({
-      title: 'Introducing telescope',
-      author: 'Sasha Greif',
-      url: 'http://sashagreif.com/introducing-telescope',
-      // creator: Meteor.user().username,
-      // owner: Meteor.userId(),
-      private: false, // public post is default
-      createdAt: new Date(),
-      upvoters: [],
-      votes: 0,
-    });
-    Posts.insert({
-      title: 'Meteor',
-      author: 'Tom Coleman',
-      url: 'http://meteor.com',
-      // creator: Meteor.user().username || 'caio',
-      // owner: Meteor.userId(),
-      private: false, // public post is default
-      createdAt: new Date(),
-      upvoters: [],
-      votes: 0,
-    });
-    
-    Posts.insert({
-      title: 'The Meteor Book',
-      author: 'Tom Coleman',
-      url: 'http://themeteorbook.com',
-      // creator: Meteor.user().username,
-      // owner: Meteor.userId(),
-      private: false, // public post is default
-      createdAt: new Date(),
-      upvoters: [],
-      votes: 0,
-    });
-  }
   /*
   * just public post
   */
-  Meteor.publish('allPosts', () => {
+  Meteor.publish('posts', (limit) => {
+    Meteor._sleepForMs(500); // to test animation
     return Posts.find({}, {
       $sort: {
         createdAt : -1
-      }
+      },
+      limit:limit
     });
   });
   
   Meteor.publish('publicPostsByAuthor', (author) => {
-    Meteor._sleepForMs(2000); // to test animation
+    Meteor._sleepForMs(500); // to test animation
     return Posts.find({
         private: false,
         author,
       });
   });
   
+  // comments
+  Meteor.publish('comments', function() {
+    return Comments.find();
+  });
+  
   Meteor.publish('privatePostsByAuthor', (author) => {
-    Meteor._sleepForMs(2000); // to test animation
+    Meteor._sleepForMs(500); // to test animation
     return Posts.find({
         private: true,
         author
@@ -67,11 +39,12 @@ if (Meteor.isServer) {
   });
   
   Meteor.publish('postsByAuthor', (author) => {
-    Meteor._sleepForMs(2000);
+    Meteor._sleepForMs(500);
     return Posts.find({author:author});
   });
-  Meteor.publish('posts', function (limit) {
-    Meteor._sleepForMs(2000);
+  
+  Meteor.publish('postsWithLimit', function (limit) {
+    Meteor._sleepForMs(500);
     return Posts.find({
       $or:[{
         owner: this.userId
@@ -85,7 +58,7 @@ if (Meteor.isServer) {
     });
   });
 }
-
+// methods
 Meteor.methods({
   'posts.insertPost'(title, url) {
     Posts.insert({
@@ -94,9 +67,10 @@ Meteor.methods({
       author: Meteor.user().username,
       owner: Meteor.userId(),
       private: false, // public post is default
-      createdAt: new Date(),
+      createdAt: new Date().getTime(),
       upvoters: [],
       votes: 0,
+      commentsCount: 0
     }, (err, result) => {
       if (err) {
         console.log(err);
@@ -132,37 +106,48 @@ Meteor.methods({
       }
     });
   },
-  'posts.insertComment'(_id, comment) {
-    Posts.update({_id}, {
-      '$push': {
-        comments: {
-          _id: new Meteor.Collection.ObjectID()._str,
-          text: comment,
-          userThatCommented: Meteor.user().username,
-          owner: Meteor.userId(),
-          comment: 'posted',
-          createdAt:new Date()
-        }
-      }
+  'comments.insertComment'(commentProperties) {
+    let user = Meteor.user();
+    let post = Posts.findOne(commentProperties.postId);
+    if (!user) {
+      throw new Meteor.Error(401, 'You need to login to make comments');
+    }
+    if (!commentProperties.body) {
+      throw new Meteor.Error(422, 'please write some content :)');
+    }
+    if (!post) {
+      throw new Meteor.Error(422, 'You must comment on a post');
+    }
+    
+    let comment = _.extend(_.pick(commentProperties, 'postId', 'body'), {
+      userId: user._id,
+      author: user.username,
+      submitted: new Date().getTime(),
+      commentsCount: 0
     });
+    
+    Posts.update(comment.postId, {$inc:{
+      commentsCount: 1
+    }});
+    
+    return Comments.insert(comment);
+    
   },
-  'posts.removeComment'(postId, commentId) {
-    Posts.update({
-      "_id": postId,
-      "comments._id": commentId,
-      "comments.owner": Meteor.userId(),
-      "comments.userThatCommented": Meteor.user().username
-    },{
-      "$pull": {
-        "comments": {"_id": commentId}
+  'comments.removeComment'(commentId, postId) {
+      let user = Meteor.user();
+      let post = Posts.findOne({_id:postId});
+      if (!user) {
+        throw new Meteor.Error(401, 'You need to login to make comments');
       }
-    }, (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(result);
-      } 
-    });
+      if (!post) {
+        throw new Meteor.Error(422, 'You must comment on a post');
+      }
+      
+      Posts.update(postId, {$inc:{
+        commentsCount: -1
+      }});
+      
+    return Comments.remove({_id:commentId});
   },
   'posts.upvote'(postId) {
     let user = Meteor.user();
@@ -179,3 +164,19 @@ Meteor.methods({
     });
   }
 });
+
+const ownsDocument = function(userId, doc) { 
+  return doc && doc.userId === userId
+} 
+
+Posts.allow({ 
+  update: ownsDocument,
+  remove: ownsDocument
+});
+
+
+Posts.deny({
+  update(userId, post, fieldNames) {
+    return (_.without(fieldNames, 'url', 'title').length > 0);
+  }
+})
