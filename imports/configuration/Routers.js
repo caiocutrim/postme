@@ -15,6 +15,8 @@ import '../ui/post_list.html';
 import '../ui/post_edit.html';
 import '../ui/best_posts.html';
 import '../ui/posts.html';
+import '../ui/profile.html';
+import '../ui/settings.html';
 /**./user-interface */
 
 //our routes
@@ -80,3 +82,40 @@ FlowRouter.route('/posts/public/best', {
     });
   }
 });
+
+FlowRouter.route('/profile', {
+  name: "profile",
+  action() {
+    BlazeLayout.render('mainLayout', {
+      content:"profile"
+    });
+  }
+});
+
+FlowRouter.route('/settings', {
+  name: "settings",
+  action() {
+    BlazeLayout.render('mainLayout', {
+      content:"settings"
+    });
+  }
+});
+
+// send 404 if route not defined
+if (Meteor.isServer) {
+  WebApp.connectHandlers.use("/", function(req, res, next) {
+    var isValidRoute = false;
+    for(var i=0; i<FlowRouter._routes.length; i++){
+      if (req.url == FlowRouter._routes[i].path) {
+        isValidRoute = true;
+        break;
+      }
+    }
+    if(isValidRoute) {
+      next();
+    } else {
+      res.writeHead(404);
+      res.end("Not Found");
+    }
+  });
+}
