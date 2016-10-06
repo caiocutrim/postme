@@ -17,6 +17,7 @@ import '../ui/best_posts.html';
 import '../ui/posts.html';
 import '../ui/profile.html';
 import '../ui/settings.html';
+import '../ui/notfound.html';
 /**./user-interface */
 
 //our routes
@@ -101,6 +102,7 @@ FlowRouter.route('/settings', {
   }
 });
 
+
 // send 404 if route not defined
 if (Meteor.isServer) {
   WebApp.connectHandlers.use("/", function(req, res, next) {
@@ -118,4 +120,11 @@ if (Meteor.isServer) {
       res.end("Not Found");
     }
   });
+}
+FlowRouter.notFound = {
+  action:function() {
+    BlazeLayout.render('mainLayout', {
+      content:"notfound"
+    });
+  }
 }
