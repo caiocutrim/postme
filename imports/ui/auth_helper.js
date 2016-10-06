@@ -16,6 +16,7 @@ Template.signup.events({
     const username = target.username.value;
     const email = target.email.value;
     const password = target.password.value;
+    $('.btn-signup').prop('value', 'Please wait...');
     Accounts.createUser({
       username,
       email,
@@ -33,9 +34,10 @@ function validateProcess (err) {
   if (err) {
     console.log(err);
     sAlert.error({
+      icon:'danger',
+      message:err.reason
     }, {
       onClose() {
-        console.log('it works?')
         FlowRouter.go('/');
       }
     }); 
@@ -46,6 +48,7 @@ function validateProcess (err) {
       message:'Created',
     },{
       onClose() {
+        $('.btn-signup').prop('value', 'Sign up');
         FlowRouter.go('/');
       }
     });
@@ -62,7 +65,7 @@ Template.login.events({
     Meteor.loginWithPassword(user, password, function(err) {
       if (err) {
         sAlert.error(err.reason);
-        $('.submit-buttom').prop('value', 'Maybe you need to create an account');
+        $('.submit-buttom').prop('value', err.reason);
       } else {
         $('.submit-buttom').prop('value', 'Login');
         FlowRouter.go('/');
