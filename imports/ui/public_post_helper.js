@@ -35,32 +35,17 @@ Template.public_posts.helpers({
 });
 
 Template.public_posts.events({
-  'click .remove-comment'(event) {
-    Meteor.call('posts.removeComment', this._id, this.comments[0]._id, (err) => {
-      if (err) {
-        console.log(err);
-        sAlert.error('You can not do this action.');
-      }
-      else {
-        console.log('removed!');
-        sAlert.info('Your comment has removed.');
-      }
-    });
+  
+ 'click .insertpost'() {
+    $('#insert-form').css({'display':'block'});
+  },
+ 'click .cancel'() {
+    $('#insert-form').css({'display':'none'});
   },
   'click .btn-discuss'(event) {
     const id = event.target.id;
     console.log(id);
     $(`#${id}.comment-form`).toggleClass('display-item');
-  },
-  'submit .comment-form'(event, instance) {
-    event.preventDefault();
-    let comment = event.target.comment.value;
-    Meteor.call('posts.insertComment', this._id, comment, (err) => {
-      if (err) { console.log(err); }
-      else {
-        event.target.comment.value = '';
-      }
-    });
   },
   'click .update'(event) {
     let id = event.target.id;
