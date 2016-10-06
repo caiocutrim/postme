@@ -1,0 +1,11 @@
+<template name="comments">
+  {{#each comments }} 
+    <div class="comments">
+      <div id="comment"><strong>{{author}}</strong>: {{body}} 
+      {{#if isCommentOwner}}
+        <span class="remove-comment fa fa-times-circle-o"></span> 
+      {{/if}}
+      </div>
+    </div>
+  {{/each}}
+</template>
