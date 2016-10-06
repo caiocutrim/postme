@@ -1,0 +1,24 @@
+<template name="best_posts">
+  {{>sAlert}}
+  <div class="page container">
+    {{#if currentUser}}
+    {{#each posts}}
+    <div class="recent posts">
+        <div class="post" style="position:relative; right:25px;">
+          <h4><a href="{{url}}" target="_blank">
+            <a href="#" class="upvote btn btn-default"><span class="fa fa-arrow-up"></span></a>
+            {{title}}</a> 
+            <span>{{url}}</span>
+          </h4>
+          <p>{{votes}} Vote(s), submitted by {{author}}, <a href="#"> {{commentsCount}}  comment(s)</a></p>
+          <buttom id="{{_id}}" class="comment-buttom btn btn-default btn-discuss"> 
+            Discuss 
+          </buttom>
+          {{> comments }} 
+          {{> commentForm}}
+        </div>
+      </div>
+    {{/each}}
+    {{/if}}
+  </div>
+</template>
