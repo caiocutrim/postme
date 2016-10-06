@@ -26,19 +26,8 @@
                 {{>post_edit}}
               </div>
               <!-- comments -->
-              <div id="{{_id}}" class="comments col-md-10 col-md-offset-1">
-                {{#each comments in comments}}
-                  <div id="comment"><strong>{{comments.userThatCommented}}</strong>: {{comments.text}}
-                    <span id="{{comments._id}}" class="remove-comment fa fa-times-circle-o"></span>
-                  </div>
-                {{/each}}
-              </div>
-              <div class="comment col-md-10 col-md-offset-1">
-              <form method="POST" class="form-inline comment-form" role="form" id="{{_id}}">
-                <input type="text" class="form-control" name="comment" id="comment-input" placeholder="comment" required>
-                <input type="submit" class="btn btn-default" value="Send text">     
-              </form>
-              </div>
+              {{>comments}}
+              {{>commentForm}}
           {{/each}}
           {{else}}
             <p> You don't have private posts yet, please write one :)</p>
